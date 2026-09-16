@@ -1,0 +1,10 @@
+# Сборка
+**/target/
+**/out/
+# Локальные настройки среды
+**/.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+Thumbs.db

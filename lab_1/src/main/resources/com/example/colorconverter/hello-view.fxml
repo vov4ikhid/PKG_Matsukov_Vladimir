@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.colorconverter.HelloController">
+    <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+    <!-- Большое окно предпросмотра и Палитра -->
+    <HBox spacing="15" alignment="CENTER">
+        <Rectangle fx:id="box" width="140" height="80" stroke="BLACK" arcWidth="10" arcHeight="10"/>
+        <VBox spacing="5" alignment="CENTER">
+            <Label text="Палитра:"/>
+            <ColorPicker fx:id="picker"/>
+        </VBox>
+    </HBox>
+
+    <Label fx:id="warn" text="" style="-fx-text-fill: red;"/>
+
+    <!-- RGB -->
+    <Label text="RGB (0..255)" style="-fx-font-weight: bold;"/>
+    <GridPane hgap="8" vgap="4" alignment="CENTER">
+        <Label text="R:" GridPane.rowIndex="0" GridPane.columnIndex="0"/><Slider fx:id="rS" max="255" GridPane.rowIndex="0" GridPane.columnIndex="1"/><TextField fx:id="rF" prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <Label text="G:" GridPane.rowIndex="1" GridPane.columnIndex="0"/><Slider fx:id="gS" max="255" GridPane.rowIndex="1" GridPane.columnIndex="1"/><TextField fx:id="gF" prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        <Label text="B:" GridPane.rowIndex="2" GridPane.columnIndex="0"/><Slider fx:id="bS" max="255" GridPane.rowIndex="2" GridPane.columnIndex="1"/><TextField fx:id="bF" prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+    </GridPane>
+
+    <!-- CMYK -->
+    <Label text="CMYK (0..100%)" style="-fx-font-weight: bold;"/>
+    <GridPane hgap="8" vgap="4" alignment="CENTER">
+        <Label text="C:" GridPane.rowIndex="0" GridPane.columnIndex="0"/><Slider fx:id="cS" max="100" GridPane.rowIndex="0" GridPane.columnIndex="1"/><TextField fx:id="cF" prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <Label text="M:" GridPane.rowIndex="1" GridPane.columnIndex="0"/><Slider fx:id="mS" max="100" GridPane.rowIndex="1" GridPane.columnIndex="1"/><TextField fx:id="mF" prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        <Label text="Y:" GridPane.rowIndex="2" GridPane.columnIndex="0"/><Slider fx:id="yS" max="100" GridPane.rowIndex="2" GridPane.columnIndex="1"/><TextField fx:id="yF" prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+        <Label text="K:" GridPane.rowIndex="3" GridPane.columnIndex="0"/><Slider fx:id="kS" max="100" GridPane.rowIndex="3" GridPane.columnIndex="1"/><TextField fx:id="kF" prefWidth="50" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+    </GridPane>
+
+    <!-- HLS -->
+    <Label text="HLS (H: 0..360, L/S: 0..100%)" style="-fx-font-weight: bold;"/>
+    <GridPane hgap="8" vgap="4" alignment="CENTER">
+        <Label text="H:" GridPane.rowIndex="0" GridPane.columnIndex="0"/><Slider fx:id="hS" max="360" GridPane.rowIndex="0" GridPane.columnIndex="1"/><TextField fx:id="hF" prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <Label text="L:" GridPane.rowIndex="1" GridPane.columnIndex="0"/><Slider fx:id="lS" max="100" GridPane.rowIndex="1" GridPane.columnIndex="1"/><TextField fx:id="lF" prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        <Label text="S:" GridPane.rowIndex="2" GridPane.columnIndex="0"/><Slider fx:id="sS" max="100" GridPane.rowIndex="2" GridPane.columnIndex="1"/><TextField fx:id="sF" prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+    </GridPane>
+</VBox>
