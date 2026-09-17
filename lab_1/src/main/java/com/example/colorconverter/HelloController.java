@@ -58,14 +58,14 @@ public class HelloController {
         });
     }
 
-    // 1. RGB -> CMYK и RGB -> HLS по формулам из методички
+    // RGB -> CMYK и RGB -> HLS
     private void updateFromRGB() {
         updating = true;
         double R = rS.getValue(), G = gS.getValue(), B = bS.getValue();
         Color color = Color.rgb((int)Math.round(R), (int)Math.round(G), (int)Math.round(B));
         box.setFill(color); picker.setValue(color);
 
-        // --- RGB -> CMYK (Формула 1 из листочка) ---
+        // RGB -> CMYK
         double rN = R / 255.0, gN = G / 255.0, bN = B / 255.0;
         double K = Math.min(1 - rN, Math.min(1 - gN, 1 - bN));
 
@@ -76,7 +76,7 @@ public class HelloController {
         cS.setValue(C * 100); mS.setValue(M * 100);
         yS.setValue(Y * 100); kS.setValue(K * 100);
 
-        // --- RGB -> HLS ---
+        // RGB -> HLS
         double max = Math.max(rN, Math.max(gN, bN));
         double min = Math.min(rN, Math.min(gN, bN));
         double d = max - min;
@@ -96,7 +96,7 @@ public class HelloController {
         updating = false;
     }
 
-    // 2. CMYK -> RGB (Формула 1 из листочка)
+    // CMYK -> RGB
     private void updateFromCMYK() {
         updating = true;
         double C = cS.getValue() / 100.0, M = mS.getValue() / 100.0;
@@ -111,7 +111,7 @@ public class HelloController {
         updateFromRGB();
     }
 
-    // 3. HLS -> RGB (Строго по блок-схеме с картинки 3)
+    // HLS -> RGB
     private void updateFromHLS() {
         updating = true;
         double H = hS.getValue();
@@ -121,12 +121,12 @@ public class HelloController {
         double R, G, B;
 
         if (S == 0) {
-            // Если S=0, то цвет серый
+            // если S=0, то серый
             R = L * 255;
             G = L * 255;
             B = L * 255;
         } else {
-            // Ветка блок-схемы
+            // ветка блок-схемы
             double m2 = (L < 0.5) ? L * (1 + S) : L + S - L * S;
             double m1 = 2 * L - m2;
 
@@ -140,7 +140,7 @@ public class HelloController {
         updateFromRGB();
     }
 
-    // Вспомогательная функция Value(H, M1, M2) из алгоритма HLS
+    // вспомогательная функция Value(H, M1, M2)
     private double valueFromHLS(double n, double m1, double m2) {
         if (n > 360) n -= 360;
         else if (n < 0) n += 360;
