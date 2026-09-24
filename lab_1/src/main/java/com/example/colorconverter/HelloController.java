@@ -38,7 +38,10 @@ public class HelloController {
         picker.setOnAction(e -> {
             if (updating) return;
             Color c = picker.getValue();
-            rS.setValue(c.getRed() * 255); gS.setValue(c.getGreen() * 255); bS.setValue(c.getBlue() * 255);
+            updating = true;
+            try {
+                rS.setValue(c.getRed() * 255); gS.setValue(c.getGreen() * 255); bS.setValue(c.getBlue() * 255);
+            } finally { updating = false; }
             updateFromRGB();
         });
 
@@ -46,7 +49,7 @@ public class HelloController {
     }
 
     private void bind(Slider s, TextField f) {
-        f.textProperty().bindBidirectional(s.valueProperty(), new NumberStringConverter("#"));
+        f.textProperty().bindBidirectional(s.valueProperty(), new NumberStringConverter("0.###"));
         f.setOnAction(e -> {
             try {
                 double v = Double.parseDouble(f.getText());
@@ -58,13 +61,24 @@ public class HelloController {
         });
     }
 
-    // RGB -> CMYK и RGB -> HLS
     private void updateFromRGB() {
         updating = true;
-        double R = rS.getValue(), G = gS.getValue(), B = bS.getValue();
-        Color color = Color.rgb((int)Math.round(R), (int)Math.round(G), (int)Math.round(B));
-        box.setFill(color); picker.setValue(color);
+        try {
+            updatePreview();
+            updateCMYKFromRGB();
+            updateHLSFromRGB();
+        } finally { updating = false; }
+    }
 
+    private void updatePreview() {
+        Color color = Color.color(rS.getValue() / 255.0,
+                gS.getValue() / 255.0, bS.getValue() / 255.0);
+        box.setFill(color);
+        picker.setValue(color);
+    }
+
+    private void updateCMYKFromRGB() {
+        double R = rS.getValue(), G = gS.getValue(), B = bS.getValue();
         // RGB -> CMYK
         double rN = R / 255.0, gN = G / 255.0, bN = B / 255.0;
         double K = Math.min(1 - rN, Math.min(1 - gN, 1 - bN));
@@ -76,6 +90,12 @@ public class HelloController {
         cS.setValue(C * 100); mS.setValue(M * 100);
         yS.setValue(Y * 100); kS.setValue(K * 100);
 
+    }
+
+    private void updateHLSFromRGB() {
+        double rN = rS.getValue() / 255.0;
+        double gN = gS.getValue() / 255.0;
+        double bN = bS.getValue() / 255.0;
         // RGB -> HLS
         double max = Math.max(rN, Math.max(gN, bN));
         double min = Math.min(rN, Math.min(gN, bN));
@@ -93,54 +113,57 @@ public class HelloController {
         if (H < 0) H += 360;
 
         hS.setValue(H); lS.setValue(L * 100); sS.setValue(S * 100);
-        updating = false;
     }
 
     // CMYK -> RGB
     private void updateFromCMYK() {
         updating = true;
-        double C = cS.getValue() / 100.0, M = mS.getValue() / 100.0;
-        double Y = yS.getValue() / 100.0, K = kS.getValue() / 100.0;
+        try {
+            double C = cS.getValue() / 100.0, M = mS.getValue() / 100.0;
+            double Y = yS.getValue() / 100.0, K = kS.getValue() / 100.0;
 
-        double R = 255 * (1 - C) * (1 - K);
-        double G = 255 * (1 - M) * (1 - K);
-        double B = 255 * (1 - Y) * (1 - K);
+            double R = 255 * (1 - C) * (1 - K);
+            double G = 255 * (1 - M) * (1 - K);
+            double B = 255 * (1 - Y) * (1 - K);
 
-        rS.setValue(R); gS.setValue(G); bS.setValue(B);
-        updating = false;
-        updateFromRGB();
+            rS.setValue(R); gS.setValue(G); bS.setValue(B);
+            updatePreview();
+            updateHLSFromRGB();
+        } finally { updating = false; }
     }
 
     // HLS -> RGB
     private void updateFromHLS() {
         updating = true;
-        double H = hS.getValue();
-        double L = lS.getValue() / 100.0;
-        double S = sS.getValue() / 100.0;
+        try {
+            double H = hS.getValue();
+            double L = lS.getValue() / 100.0;
+            double S = sS.getValue() / 100.0;
 
-        double R, G, B;
+            double R, G, B;
 
-        if (S == 0) {
-            // если S=0, то серый
-            R = L * 255;
-            G = L * 255;
-            B = L * 255;
-        } else {
-            // ветка блок-схемы
-            double m2 = (L < 0.5) ? L * (1 + S) : L + S - L * S;
-            double m1 = 2 * L - m2;
+            if (S == 0) {
+                // Если S=0, то цвет серый
+                R = L * 255;
+                G = L * 255;
+                B = L * 255;
+            } else {
+                // Ветка блок-схемы
+                double m2 = (L < 0.5) ? L * (1 + S) : L + S - L * S;
+                double m1 = 2 * L - m2;
 
-            R = valueFromHLS(H + 120, m1, m2) * 255;
-            G = valueFromHLS(H, m1, m2) * 255;
-            B = valueFromHLS(H - 120, m1, m2) * 255;
-        }
+                R = valueFromHLS(H + 120, m1, m2) * 255;
+                G = valueFromHLS(H, m1, m2) * 255;
+                B = valueFromHLS(H - 120, m1, m2) * 255;
+            }
 
-        rS.setValue(R); gS.setValue(G); bS.setValue(B);
-        updating = false;
-        updateFromRGB();
+            rS.setValue(R); gS.setValue(G); bS.setValue(B);
+            updatePreview();
+            updateCMYKFromRGB();
+        } finally { updating = false; }
     }
 
-    // вспомогательная функция Value(H, M1, M2)
+    // Вспомогательная функция Value(H, M1, M2) из алгоритма HLS
     private double valueFromHLS(double n, double m1, double m2) {
         if (n > 360) n -= 360;
         else if (n < 0) n += 360;
