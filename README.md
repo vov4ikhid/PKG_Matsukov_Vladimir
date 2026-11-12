@@ -2,6 +2,8 @@
 
 **Мацуков Владимир Александрович**
 
+Папки: [lab_1](lab_1) — цветовые модели; [lab_2](lab_2) — чтение информации из графических файлов.
+
 ## Лабораторная работа 1 — Цветовые модели
 
 Вариант 2: **RGB ↔ CMYK ↔ HLS**.
@@ -57,3 +59,25 @@ RGB задаётся в диапазоне 0–255; CMYK и L/S — 0–100%; H 
 ### Интерфейс
 
 ![Окно приложения](lab_1/screenshot.png)
+
+
+## Лабораторная работа 2 — Чтение информации из графических файлов
+
+Проект: [lab_2](lab_2). Отчет: [Report_Lab2_Matsukov.docx](lab_2/Report_Lab2_Matsukov.docx).
+
+Java 17 и JavaFX. Простой интерфейс: выбор файлов/папки, таблица свойств, прогресс, остановка и CSV. Ручной разбор JPG, PNG, GIF, TIFF, BMP и PCX без библиотек метаданных. Фоновая обработка папки до 100 000 файлов.
+
+Откройте **lab_2/pom.xml** в IntelliJ IDEA, выберите **JDK 17**, затем Maven → Plugins → javafx → javafx:run.
+
+Из PowerShell в папке `lab_2`:
+
+```powershell
+.\mvnw.cmd javafx:run
+.\mvnw.cmd test
+```
+
+На Linux/macOS: `sh mvnw javafx:run` и `sh mvnw test`.
+
+Все **61 автоматический тест** проходят, в том числе 24 файла преподавателя в `lab_2/test-data/teacher`.
+
+Для сборки приложения с Java runtime на Windows: `lab_2/build-windows.bat`. Готовый EXE не включен.

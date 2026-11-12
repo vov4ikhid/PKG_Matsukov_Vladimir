@@ -1,0 +1,13 @@
+# Результаты сборки и готовые приложения
+target/
+release/
+*.class
+*.log
+
+# Локальные настройки IntelliJ IDEA
+.idea/
+*.iml
+
+# Системные файлы
+.DS_Store
+Thumbs.db

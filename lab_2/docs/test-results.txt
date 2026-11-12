@@ -1,0 +1,9 @@
+-------------------------------------------------------------------------------
+Test set: ru.matsukov.raster.ImageParserTest
+-------------------------------------------------------------------------------
+Tests run: 37, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.412 s -- in ru.matsukov.raster.ImageParserTest
+
+-------------------------------------------------------------------------------
+Test set: ru.matsukov.raster.TeacherFilesTest
+-------------------------------------------------------------------------------
+Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in ru.matsukov.raster.TeacherFilesTest

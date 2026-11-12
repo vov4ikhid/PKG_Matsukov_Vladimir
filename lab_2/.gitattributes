@@ -1,0 +1,13 @@
+* text=auto
+*.java text eol=lf
+*.md text eol=lf
+*.xml text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+*.png binary
+*.jpg binary
+*.gif binary
+*.tif binary
+*.tiff binary
+*.bmp binary
+*.pcx binary
